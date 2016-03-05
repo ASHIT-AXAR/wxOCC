@@ -46,7 +46,6 @@
 #include <gp.hxx>
 #include <UnitsAPI.hxx>
 #include <Geom_BSplineSurface.hxx>
-#include "BasicGLPane.h"
 #include <wx/app.h>
 #include <wx/event.h>
 #include <gdk/gdkx.h>
