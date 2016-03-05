@@ -5,8 +5,8 @@
 ## Debug
 ProjectName            :=wxOCE
 ConfigurationName      :=Debug
-WorkspacePath          := "/home/dax/Documents/scratch/wxOCE"
-ProjectPath            := "/home/dax/Documents/scratch/wxOCE/wxOCE"
+WorkspacePath          := "/home/dax/Documents/repos/wxOCE"
+ProjectPath            := "/home/dax/Documents/repos/wxOCE/wxOCE"
 IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
@@ -89,7 +89,7 @@ PreBuild:
 ## Objects
 ##
 $(IntermediateDirectory)/src_main.cpp$(ObjectSuffix): src/main.cpp $(IntermediateDirectory)/src_main.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/dax/Documents/scratch/wxOCE/wxOCE/src/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/dax/Documents/repos/wxOCE/wxOCE/src/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/src_main.cpp$(DependSuffix): src/main.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_main.cpp$(DependSuffix) -MM "src/main.cpp"
 
@@ -97,7 +97,7 @@ $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix): src/main.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix) "src/main.cpp"
 
 $(IntermediateDirectory)/src_vxOCE.cpp$(ObjectSuffix): src/vxOCE.cpp $(IntermediateDirectory)/src_vxOCE.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/dax/Documents/scratch/wxOCE/wxOCE/src/vxOCE.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_vxOCE.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/dax/Documents/repos/wxOCE/wxOCE/src/vxOCE.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_vxOCE.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/src_vxOCE.cpp$(DependSuffix): src/vxOCE.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_vxOCE.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_vxOCE.cpp$(DependSuffix) -MM "src/vxOCE.cpp"
 

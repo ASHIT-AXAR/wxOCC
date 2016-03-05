@@ -341,9 +341,15 @@ MainFrame::MainFrame(wxWindow* parent,
 
     wxMenu* view_menu = new wxMenu;
     
-    //view_menu->Append(ID_AddSphere, _("Add Spheres..."));
+    view_menu->Append(xID_VIEW_ZOOM_IN, _("Zoom In"));
+    view_menu->Append(xID_VIEW_ZOOM_OUT, _("Zoom Out"));
+    view_menu->Append(xID_VIEW_ZOOM_FIT, _("Zoom Fit"));
+    view_menu->AppendSeparator();
+    view_menu->Append(xID_VIEW_SET_WIREFRAME, _("Set Render To Wireframe"));
+    view_menu->Append(xID_VIEW_SET_SHADED, _("Set Render To Shaded"));
 
     wxMenu* help_menu = new wxMenu;
+    help_menu->Append(wxID_INFO);
     help_menu->Append(wxID_ABOUT);
 
     mb->Append(file_menu, _("&File"));
@@ -374,8 +380,8 @@ MainFrame::MainFrame(wxWindow* parent,
     tb_main->SetToolBitmapSize(wxSize(48,48));
     tb_main->AddTool(xID_FILE_NEW, wxT("New"), wxArtProvider::GetBitmap(wxART_NEW));
     //tb_main->AddTool(ID_SampleItem+2, wxT("Open"), wxArtProvider::GetBitmap(wxART_FILE_OPEN));
-    tb_main->AddSeparator();
-    tb_main->AddTool(xID_FILE_NEWBOTTLE, wxT("Craete Bottle"), wxArtProvider::GetBitmap(wxART_ADD_BOOKMARK));
+    //tb_main->AddSeparator();
+    //tb_main->AddTool(xID_FILE_NEWBOTTLE, wxT("Craete Bottle"), wxArtProvider::GetBitmap(wxART_ADD_BOOKMARK));
     tb_main->AddSeparator();
     tb_main->AddTool(wxID_INFO, wxT("Info"), wxArtProvider::GetBitmap(wxART_INFORMATION));
     tb_main->AddTool(wxID_ABOUT, wxT("About"), wxArtProvider::GetBitmap(wxART_HELP));
@@ -498,7 +504,7 @@ wxString MainFrame::GetIntroText()
         "<html><body>"
         "<h3>Welcome to wxOCE</h3>"
         "<br/><b>Overview</b><br/>"
-        "<p>wxOCE is an implementation of OpenCasecade integrated into "
+        "<p>wxOCE is an implementation of OpenCascade integrated into "
         "the wxWidgets GUI system. There are a number of tutorials and examples "
         "for Qt, MFC etc, but very few that showed it clearly how to get it working "
         "under the wxWidgets system.</p>"
@@ -508,14 +514,27 @@ wxString MainFrame::GetIntroText()
         "system devloped by Virtex Edge Design. This sample app has been created in hopes to help others " 
         "who are trying to do the same as us.</p>"
         "<p><b>Versions</b></p>"
-        "<p><b>V. 0.2.0</b></p>"
+        
+        "<p><b>v. 0.3.0</b></p>"
+        "<p>wxOCE 0.3.0, the demo is more matured and has added functionality."
+        "<ul>"
+        "<li>Encapsulates wxOCE Into it's own Control (wxOCWindow).</li>"
+        "<li>Creates the OpenCascade Demo Bottle on start.</li>"
+        "<li>Extended wxAUI Integration.</li>"
+        "<li>Added Zoom In, Out, Fit Controls.</li>"
+        "<li>Added Wireframe/Shaded Render Toggle Controls.</li>"
+        "<li>More bug fixes.</li>"
+        "</ul>"
+        
+        "<p><b>v. 0.2.0</b></p>"
         "<p>wxOCE 0.2.0, extended and improved with deeper wxWidgets Integration"
         "<ul>"
         "<li>Integrated with the wxAUI System for better useability.</li>"
         "<li>Added simple Camera Operations for Interation with OpenCascade.</li>"
         "<li>Lots of bug fixes</li>"
         "</ul>"
-        "<p><b>V. 0.1.0</b></p>"
+        
+        "<p><b>v. 0.1.0</b></p>"
         "<p>The first working version of wxOCE 0.1.0"
         "<ul>"
         "<li>Able to create and parent the Open Cascade X11 window into a wxPanel.</li>"
@@ -550,7 +569,8 @@ wxHtmlWindow* MainFrame::CreateHTMLCtrl(wxWindow* parent)
     wxHtmlWindow* ctrl = new wxHtmlWindow(parent, wxID_ANY,
                                    wxDefaultPosition,
                                    wxSize(400,300));
-    ctrl->SetPage(GetIntroText());
+    //ctrl->SetPage(GetIntroText());
+    ctrl->LoadPage(wxT("../doc/readme.html"));
     return ctrl;
 }
 
