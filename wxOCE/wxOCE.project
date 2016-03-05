@@ -2,8 +2,14 @@
 <CodeLite_Project Name="wxOCE" InternalType="GUI">
   <Description/>
   <Dependencies/>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
+  <VirtualDirectory Name="include">
+    <File Name="include/vxOCE.h"/>
+  </VirtualDirectory>
   <VirtualDirectory Name="src">
-    <File Name="main.cpp"/>
+    <File Name="src/main.cpp"/>
+    <File Name="src/vxOCE.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -22,7 +28,6 @@
       </Compiler>
       <Linker Options="$(shell wx-config --debug=yes --libs --unicode=yes)`wx-config --libs propgrid,core,base`;`wx-config --cxxflags`;`wx-config --libs`;`wx-config --libs aui`;`wx-config --libs --gl-libs` -lGL -lGLU -lglut -lstdc++;`wx-config --libs std stc`;`wx-config --libs ribbon;`$(shell pkg-config --libs --cflags gtk+-2.0);$(shell pkg-config --libs --cflags glib-2.0);-lTKernel;-lTKMath;-lTKBRep;-lTKTopAlgo;-lTKPrim;-lTKBO;-lTKOffset;-lTKService;-lTKV3d;-lTKOpenGl;-lTKFillet;`wx-config --libs --gl-libs` -lGL -lGLU -lglut -lstdc++" Required="yes">
         <LibraryPath Value="/usr/local/lib"/>
-        <Library Value="GL"/>
         <Library Value="X11"/>
         <Library Value="libTKService.so"/>
         <Library Value="libTKernel.so"/>
@@ -31,6 +36,11 @@
         <Library Value="libTKV3d.so"/>
         <Library Value="libTKOpenGl.so"/>
         <Library Value="libTKTopAlgo.so"/>
+        <Library Value="libTKSTEP.so"/>
+        <Library Value="libTKXSBase.so"/>
+        <Library Value="libTKGeomBase.so"/>
+        <Library Value="libTKG3d.so"/>
+        <Library Value="libTKG2d.so"/>
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
@@ -104,6 +114,4 @@
       </Completion>
     </Configuration>
   </Settings>
-  <Dependencies Name="Debug"/>
-  <Dependencies Name="Release"/>
 </CodeLite_Project>

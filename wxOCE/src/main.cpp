@@ -36,54 +36,17 @@
 
 #include "wx/aui/aui.h"
 //#include "../sample.xpm"
+#include "../include/vxOCE.h"
 
-#include <Aspect_Handle.hxx>
-#include <OpenGl_GraphicDriver.hxx>
-#include <Xw_Window.hxx>
-#include <V3d_View.hxx>
-#include <TCollection_AsciiString.hxx>
-#include <TCollection_ExtendedString.hxx>
+//Images
 
-#include <Graphic3d_NameOfMaterial.hxx>
-  
-#include <AIS_InteractiveContext.hxx>
-#include <AIS_Shape.hxx>
-#include <TCollection_ExtendedString.hxx>
-#include <wx/defs.h>
-#include <gdk/gdkx.h>
-#include <gtk/gtkwidget.h>
-
-//#include <Graphic3d_WNTGraphicDevice.hxx>
-#include <V3d_Viewer.hxx>
-//#include <WNT_Window.hxx>
-#include <Standard_ErrorHandler.hxx>
-#include <Geom_Circle.hxx>
-#include <AIS_Circle.hxx>
-#include <GC_MakeCircle.hxx>
-#include <BRepPrimAPI_MakeSphere.hxx>
-#include <BRepPrimAPI_MakeCylinder.hxx>
-#include <StdPrs_WFDeflectionShape.hxx>
-#include <StdPrs_ShadedShape.hxx>
-#include <TopExp_Explorer.hxx>
-#include <BRep_Tool.hxx>
-#include <Geom_Plane.hxx>
-//#include <AIS_Drawer.hxx>
-#include <TopoDS.hxx>
-#include <Prs3d_ShadingAspect.hxx>
-#include <StdSelect_BRepSelectionTool.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Lin.hxx>
-#include <Geom_Line.hxx>
-#include <AIS_Line.hxx>
-#include <AIS_Trihedron.hxx>
-#include <Geom_Axis2Placement.hxx>
-#include <gp.hxx>
-#include <UnitsAPI.hxx>
-#include <Geom_BSplineSurface.hxx>
-
-#include <gdk/gdkx.h>
-#include <gtk/gtk.h>
+//      View
+#include "../img/view/view_shaded.xpm"
+#include "../img/view/view_wireframe.xpm"
+#include "../img/view/zoom_extend.xpm"
+#include "../img/view/zoom_in.xpm"
+#include "../img/view/zoom_out.xpm"
+#include "../img/view/zoom_selection.xpm"
 
 // -- application --
 
@@ -96,26 +59,28 @@ public:
 DECLARE_APP(MyApp)
 IMPLEMENT_APP(MyApp)
 
+
 // -- frame --
 
-class MyFrame : public wxFrame
+class MainFrame : public wxFrame
 {
     enum
     {
+        xID_FILE_NEW,
+        xID_FILE_OPEN,
+        xID_VIEW_SET_SHADED,
+        xID_VIEW_SET_WIREFRAME,
+        xID_VIEW_ZOOM_IN,
+        xID_VIEW_ZOOM_OUT,
+        xID_VIEW_ZOOM_FIT,
+        xID_VIEW_ZOOM_SELECTION,
+        xID_FILE_NEWBOTTLE,
         ID_CreateTree = wxID_HIGHEST+1,
         ID_AddSphere,
-        ID_CreateOCE,
-        ID_CreateGrid,
-        ID_CreateText,
         ID_CreateHTML,
         ID_CreateNotebook,
-        ID_CreateSizeReport,
-        ID_GridContent,
-        ID_TextContent,
-        ID_TreeContent,
         ID_HTMLContent,
         ID_NotebookContent,
-        ID_SizeReportContent,
         ID_CreatePerspective,
         ID_CopyPerspectiveCode,
         ID_AllowFloating,
@@ -156,45 +121,48 @@ class MyFrame : public wxFrame
     };
 
 public:
-    MyFrame(wxWindow* parent,
+    MainFrame(wxWindow* parent,
             wxWindowID id,
             const wxString& title,
             const wxPoint& pos = wxDefaultPosition,
             const wxSize& size = wxDefaultSize,
             long style = wxDEFAULT_FRAME_STYLE | wxSUNKEN_BORDER);
 
-    ~MyFrame();
+    ~MainFrame();
 
     wxAuiDockArt* GetDockArt();
     void DoUpdate();
-    
-    
-    Handle(Xw_Window) wind;
-    Handle(Aspect_DisplayConnection) aDisplayConnection;
-	Handle(V3d_Viewer) myViewer;
-    
-    //! the occ view.
-    Handle(V3d_View) mView;
-	Handle(AIS_InteractiveContext) myContext;
-    
-    Handle(V3d_Viewer)             Viewer (wxPanel* panel, 
-                                        const Standard_ExtString theName,
-                                         const Standard_CString theDomain,
-                                         const Standard_Real theViewSize,
-                                         const V3d_TypeOfOrientation theViewProj,
-                                         const Standard_Boolean theComputedMode,
-                                         const Standard_Boolean theDefaultComputedMode );
-
+    int ITEMCOUNT;
 private:
+
+    //Images
+    wxBitmap xIMG_SET_SHADED;
+    wxBitmap xIMG_SET_WIREFRAME;
+    wxBitmap xIMG_ZOOM_IN;
+    wxBitmap xIMG_ZOOM_OUT;
+    wxBitmap xIMG_ZOOM_SELECTION;
+    wxBitmap xIMG_ZOOM_EXTENTS;
+    
     wxPoint GetStartPosition();
     wxPanel* CreatewxOCECntrl(wxWindow* parent = NULL);
     wxTextCtrl* CreateTextCtrl(const wxString& text = wxEmptyString);
     wxHtmlWindow* CreateHTMLCtrl(wxWindow* parent = NULL);
     wxAuiNotebook* CreateNotebook();
+    wxOCEWindow* GetActiveDocument();
     
     wxString GetIntroText();
 
 private:
+
+    void OnSetToShaded(wxCommandEvent& evt);
+    void OnSetToWireframe(wxCommandEvent& evt);
+    void OnZoomIn(wxCommandEvent& evt);
+    void OnZoomOut(wxCommandEvent& evt);
+    void OnZoomFit(wxCommandEvent& evt);
+    void OnZoomSelection(wxCommandEvent& evt);
+
+    void OnCreateBottle(wxCommandEvent& evt);
+
     void AddSphere(wxCommandEvent& evt);
     void OnEraseBackground(wxEraseEvent& evt);
     void OnSize(wxSizeEvent& evt);
@@ -217,6 +185,7 @@ private:
     void OnNotebookPageClose(wxAuiNotebookEvent& evt);
     void OnNotebookPageClosed(wxAuiNotebookEvent& evt);
     void OnExit(wxCommandEvent& evt);
+    void OnInfo(wxCommandEvent& evt);
     void OnAbout(wxCommandEvent& evt);
     void OnTabAlignment(wxCommandEvent &evt);
 
@@ -248,9 +217,9 @@ bool MyApp::OnInit()
     if ( !wxApp::OnInit() )
         return false;
 
-    wxFrame* frame = new MyFrame(NULL,
+    wxFrame* frame = new MainFrame(NULL,
                                  wxID_ANY,
-                                 wxT("wxOpenCascade Sample"),
+                                 wxT("wxOCE Sample"),
                                  wxDefaultPosition,
                                  wxSize(800, 600));
     frame->Show();
@@ -258,80 +227,82 @@ bool MyApp::OnInit()
     return true;
 }
 
-BEGIN_EVENT_TABLE(MyFrame, wxFrame)
-    EVT_ERASE_BACKGROUND(MyFrame::OnEraseBackground)
-    EVT_SIZE(MyFrame::OnSize)
-    EVT_MENU(MyFrame::ID_AddSphere, MyFrame::AddSphere)
-    EVT_MENU(MyFrame::ID_CreateOCE, MyFrame::OnCreatewxOCECntrl)
-    EVT_MENU(MyFrame::ID_CreateText, MyFrame::OnCreateText)
-    EVT_MENU(MyFrame::ID_CreateHTML, MyFrame::OnCreateHTML)
-    EVT_MENU(MyFrame::ID_CreateNotebook, MyFrame::OnCreateNotebook)
-    EVT_MENU(ID_AllowFloating, MyFrame::OnManagerFlag)
-    EVT_MENU(ID_TransparentHint, MyFrame::OnManagerFlag)
-    EVT_MENU(ID_VenetianBlindsHint, MyFrame::OnManagerFlag)
-    EVT_MENU(ID_RectangleHint, MyFrame::OnManagerFlag)
-    EVT_MENU(ID_NoHint, MyFrame::OnManagerFlag)
-    EVT_MENU(ID_HintFade, MyFrame::OnManagerFlag)
-    EVT_MENU(ID_NoVenetianFade, MyFrame::OnManagerFlag)
-    EVT_MENU(ID_TransparentDrag, MyFrame::OnManagerFlag)
-    EVT_MENU(ID_LiveUpdate, MyFrame::OnManagerFlag)
-    EVT_MENU(ID_AllowActivePane, MyFrame::OnManagerFlag)
-    EVT_MENU(ID_NotebookTabFixedWidth, MyFrame::OnNotebookFlag)
-    EVT_MENU(ID_NotebookNoCloseButton, MyFrame::OnNotebookFlag)
-    EVT_MENU(ID_NotebookCloseButton, MyFrame::OnNotebookFlag)
-    EVT_MENU(ID_NotebookCloseButtonAll, MyFrame::OnNotebookFlag)
-    EVT_MENU(ID_NotebookCloseButtonActive, MyFrame::OnNotebookFlag)
-    EVT_MENU(ID_NotebookAllowTabMove, MyFrame::OnNotebookFlag)
-    EVT_MENU(ID_NotebookAllowTabExternalMove, MyFrame::OnNotebookFlag)
-    EVT_MENU(ID_NotebookAllowTabSplit, MyFrame::OnNotebookFlag)
-    EVT_MENU(ID_NotebookScrollButtons, MyFrame::OnNotebookFlag)
-    EVT_MENU(ID_NotebookWindowList, MyFrame::OnNotebookFlag)
-    EVT_MENU(ID_NotebookArtGloss, MyFrame::OnNotebookFlag)
-    EVT_MENU(ID_NotebookArtSimple, MyFrame::OnNotebookFlag)
-    EVT_MENU(ID_NotebookAlignTop,     MyFrame::OnTabAlignment)
-    EVT_MENU(ID_NotebookAlignBottom,  MyFrame::OnTabAlignment)
-    EVT_MENU(ID_NoGradient, MyFrame::OnGradient)
-    EVT_MENU(ID_VerticalGradient, MyFrame::OnGradient)
-    EVT_MENU(ID_HorizontalGradient, MyFrame::OnGradient)
-    EVT_MENU(ID_AllowToolbarResizing, MyFrame::OnToolbarResizing)
-    EVT_MENU(ID_Settings, MyFrame::OnSettings)
-    EVT_MENU(ID_CustomizeToolbar, MyFrame::OnCustomizeToolbar)
-    EVT_MENU(ID_GridContent, MyFrame::OnChangeContentPane)
-    EVT_MENU(ID_TreeContent, MyFrame::OnChangeContentPane)
-    EVT_MENU(ID_TextContent, MyFrame::OnChangeContentPane)
-    EVT_MENU(ID_SizeReportContent, MyFrame::OnChangeContentPane)
-    EVT_MENU(ID_HTMLContent, MyFrame::OnChangeContentPane)
-    EVT_MENU(ID_NotebookContent, MyFrame::OnChangeContentPane)
-    EVT_MENU(wxID_EXIT, MyFrame::OnExit)
-    EVT_MENU(wxID_ABOUT, MyFrame::OnAbout)
-    EVT_UPDATE_UI(ID_NotebookTabFixedWidth, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_NotebookNoCloseButton, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_NotebookCloseButton, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_NotebookCloseButtonAll, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_NotebookCloseButtonActive, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_NotebookAllowTabMove, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_NotebookAllowTabExternalMove, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_NotebookAllowTabSplit, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_NotebookScrollButtons, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_NotebookWindowList, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_AllowFloating, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_TransparentHint, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_VenetianBlindsHint, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_RectangleHint, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_NoHint, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_HintFade, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_NoVenetianFade, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_TransparentDrag, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_LiveUpdate, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_NoGradient, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_VerticalGradient, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_HorizontalGradient, MyFrame::OnUpdateUI)
-    EVT_UPDATE_UI(ID_AllowToolbarResizing, MyFrame::OnUpdateUI)
-    EVT_AUINOTEBOOK_ALLOW_DND(wxID_ANY, MyFrame::OnAllowNotebookDnD)
+BEGIN_EVENT_TABLE(MainFrame, wxFrame)
+    EVT_ERASE_BACKGROUND(MainFrame::OnEraseBackground)
+    EVT_MENU(MainFrame::xID_FILE_NEW, MainFrame::OnCreatewxOCECntrl)
+    EVT_MENU(MainFrame::xID_FILE_NEWBOTTLE, MainFrame::OnCreateBottle)
+    EVT_MENU(MainFrame::xID_VIEW_SET_SHADED, MainFrame::OnSetToShaded)
+    EVT_MENU(MainFrame::xID_VIEW_SET_WIREFRAME, MainFrame::OnSetToWireframe)
+    EVT_MENU(MainFrame::xID_VIEW_ZOOM_IN, MainFrame::OnZoomIn)
+    EVT_MENU(MainFrame::xID_VIEW_ZOOM_OUT, MainFrame::OnZoomOut)
+    EVT_MENU(MainFrame::xID_VIEW_ZOOM_FIT, MainFrame::OnZoomFit)
+    EVT_MENU(MainFrame::xID_VIEW_ZOOM_SELECTION, MainFrame::OnZoomSelection)
+    EVT_SIZE(MainFrame::OnSize)
+    EVT_MENU(MainFrame::ID_CreateHTML, MainFrame::OnCreateHTML)
+    EVT_MENU(MainFrame::ID_CreateNotebook, MainFrame::OnCreateNotebook)
+    EVT_MENU(ID_AllowFloating, MainFrame::OnManagerFlag)
+    EVT_MENU(ID_TransparentHint, MainFrame::OnManagerFlag)
+    EVT_MENU(ID_VenetianBlindsHint, MainFrame::OnManagerFlag)
+    EVT_MENU(ID_RectangleHint, MainFrame::OnManagerFlag)
+    EVT_MENU(ID_NoHint, MainFrame::OnManagerFlag)
+    EVT_MENU(ID_HintFade, MainFrame::OnManagerFlag)
+    EVT_MENU(ID_NoVenetianFade, MainFrame::OnManagerFlag)
+    EVT_MENU(ID_TransparentDrag, MainFrame::OnManagerFlag)
+    EVT_MENU(ID_LiveUpdate, MainFrame::OnManagerFlag)
+    EVT_MENU(ID_AllowActivePane, MainFrame::OnManagerFlag)
+    EVT_MENU(ID_NotebookTabFixedWidth, MainFrame::OnNotebookFlag)
+    EVT_MENU(ID_NotebookNoCloseButton, MainFrame::OnNotebookFlag)
+    EVT_MENU(ID_NotebookCloseButton, MainFrame::OnNotebookFlag)
+    EVT_MENU(ID_NotebookCloseButtonAll, MainFrame::OnNotebookFlag)
+    EVT_MENU(ID_NotebookCloseButtonActive, MainFrame::OnNotebookFlag)
+    EVT_MENU(ID_NotebookAllowTabMove, MainFrame::OnNotebookFlag)
+    EVT_MENU(ID_NotebookAllowTabExternalMove, MainFrame::OnNotebookFlag)
+    EVT_MENU(ID_NotebookAllowTabSplit, MainFrame::OnNotebookFlag)
+    EVT_MENU(ID_NotebookScrollButtons, MainFrame::OnNotebookFlag)
+    EVT_MENU(ID_NotebookWindowList, MainFrame::OnNotebookFlag)
+    EVT_MENU(ID_NotebookArtGloss, MainFrame::OnNotebookFlag)
+    EVT_MENU(ID_NotebookArtSimple, MainFrame::OnNotebookFlag)
+    EVT_MENU(ID_NotebookAlignTop,     MainFrame::OnTabAlignment)
+    EVT_MENU(ID_NotebookAlignBottom,  MainFrame::OnTabAlignment)
+    EVT_MENU(ID_NoGradient, MainFrame::OnGradient)
+    EVT_MENU(ID_VerticalGradient, MainFrame::OnGradient)
+    EVT_MENU(ID_HorizontalGradient, MainFrame::OnGradient)
+    EVT_MENU(ID_AllowToolbarResizing, MainFrame::OnToolbarResizing)
+    EVT_MENU(ID_Settings, MainFrame::OnSettings)
+    EVT_MENU(ID_CustomizeToolbar, MainFrame::OnCustomizeToolbar)
+    EVT_MENU(ID_HTMLContent, MainFrame::OnChangeContentPane)
+    EVT_MENU(ID_NotebookContent, MainFrame::OnChangeContentPane)
+    EVT_MENU(wxID_EXIT, MainFrame::OnExit)
+    EVT_MENU(wxID_INFO, MainFrame::OnInfo)
+    EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
+    EVT_UPDATE_UI(ID_NotebookTabFixedWidth, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_NotebookNoCloseButton, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_NotebookCloseButton, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_NotebookCloseButtonAll, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_NotebookCloseButtonActive, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_NotebookAllowTabMove, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_NotebookAllowTabExternalMove, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_NotebookAllowTabSplit, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_NotebookScrollButtons, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_NotebookWindowList, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_AllowFloating, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_TransparentHint, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_VenetianBlindsHint, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_RectangleHint, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_NoHint, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_HintFade, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_NoVenetianFade, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_TransparentDrag, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_LiveUpdate, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_NoGradient, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_VerticalGradient, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_HorizontalGradient, MainFrame::OnUpdateUI)
+    EVT_UPDATE_UI(ID_AllowToolbarResizing, MainFrame::OnUpdateUI)
+    EVT_AUINOTEBOOK_ALLOW_DND(wxID_ANY, MainFrame::OnAllowNotebookDnD)
 END_EVENT_TABLE()
 
 
-MyFrame::MyFrame(wxWindow* parent,
+MainFrame::MainFrame(wxWindow* parent,
                  wxWindowID id,
                  const wxString& title,
                  const wxPoint& pos,
@@ -341,6 +312,14 @@ MyFrame::MyFrame(wxWindow* parent,
 {
     // tell wxAuiManager to manage this frame
     m_mgr.SetManagedWindow(this);
+    
+    //First Load all Images
+    xIMG_SET_SHADED = wxBitmap(wxImage(view_shaded_xpm));
+    xIMG_SET_WIREFRAME = wxBitmap(wxImage(view_wireframe_xpm));
+    xIMG_ZOOM_IN = wxBitmap(wxImage(zoom_in_xpm));
+    xIMG_ZOOM_OUT = wxBitmap(wxImage(zoom_out_xpm));
+    xIMG_ZOOM_SELECTION = wxBitmap(wxImage(zoom_selection_xpm));
+    xIMG_ZOOM_EXTENTS = wxBitmap(wxImage(zoom_extend_xpm));
 
     // set frame icon
     //SetIcon(wxIcon(sample_xpm));
@@ -356,13 +335,13 @@ MyFrame::MyFrame(wxWindow* parent,
     wxMenuBar* mb = new wxMenuBar;
 
     wxMenu* file_menu = new wxMenu;
+    file_menu->Append(xID_FILE_NEW, _("Add OCE envr..."));
+    file_menu->AppendSeparator();
     file_menu->Append(wxID_EXIT);
 
     wxMenu* view_menu = new wxMenu;
     
-    view_menu->Append(ID_CreateOCE, _("Add OCE envr..."));
-    view_menu->AppendSeparator();
-    view_menu->Append(ID_AddSphere, _("Add Spheres..."));
+    //view_menu->Append(ID_AddSphere, _("Add Spheres..."));
 
     wxMenu* help_menu = new wxMenu;
     help_menu->Append(wxID_ABOUT);
@@ -384,23 +363,37 @@ MyFrame::MyFrame(wxWindow* parent,
 
 
 
+    //Maximizes the window
+    wxTopLevelWindow::Maximize(true);
 
 
     //  Create Toolbars
     /***************************************************************************/
-    wxAuiToolBar* tb1 = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
-                                         wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW);
-    tb1->SetToolBitmapSize(wxSize(48,48));
-    tb1->AddTool(ID_SampleItem+1, wxT("Test"), wxArtProvider::GetBitmap(wxART_ERROR));
-    tb1->AddSeparator();
-    tb1->AddTool(ID_SampleItem+2, wxT("Test"), wxArtProvider::GetBitmap(wxART_QUESTION));
-    tb1->AddTool(ID_SampleItem+3, wxT("Test"), wxArtProvider::GetBitmap(wxART_INFORMATION));
-    tb1->AddTool(ID_SampleItem+4, wxT("Test"), wxArtProvider::GetBitmap(wxART_WARNING));
-    tb1->AddTool(ID_SampleItem+5, wxT("Test"), wxArtProvider::GetBitmap(wxART_MISSING_IMAGE));
-    tb1->Realize();
-
-
-    wxWindow* wnd10 = CreateTextCtrl(wxT("This pane will prompt the user before hiding."));
+    wxAuiToolBar* tb_main = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+                                         wxAUI_TB_DEFAULT_STYLE);
+    tb_main->SetToolBitmapSize(wxSize(48,48));
+    tb_main->AddTool(xID_FILE_NEW, wxT("New"), wxArtProvider::GetBitmap(wxART_NEW));
+    //tb_main->AddTool(ID_SampleItem+2, wxT("Open"), wxArtProvider::GetBitmap(wxART_FILE_OPEN));
+    tb_main->AddSeparator();
+    tb_main->AddTool(xID_FILE_NEWBOTTLE, wxT("Craete Bottle"), wxArtProvider::GetBitmap(wxART_ADD_BOOKMARK));
+    tb_main->AddSeparator();
+    tb_main->AddTool(wxID_INFO, wxT("Info"), wxArtProvider::GetBitmap(wxART_INFORMATION));
+    tb_main->AddTool(wxID_ABOUT, wxT("About"), wxArtProvider::GetBitmap(wxART_HELP));
+    tb_main->Realize();
+    
+        wxAuiToolBar* tb_view = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+                                         wxAUI_TB_DEFAULT_STYLE);
+    tb_view->SetToolBitmapSize(wxSize(48,48));
+    tb_view->AddTool(xID_VIEW_ZOOM_IN, wxT("Zoom In"), xIMG_ZOOM_IN);
+    tb_view->AddTool(xID_VIEW_ZOOM_OUT, wxT("Zoom Out"),  xIMG_ZOOM_OUT);
+    tb_view->AddTool(xID_VIEW_ZOOM_FIT, wxT("Zoom To Extents"),  xIMG_ZOOM_EXTENTS);
+    tb_view->AddTool(xID_VIEW_ZOOM_SELECTION, wxT("Zoom To Selection"), xIMG_ZOOM_SELECTION);
+    tb_view->AddSeparator();
+    tb_view->AddTool(xID_VIEW_SET_SHADED, wxT("Set Render to Shaded"), xIMG_SET_SHADED);
+    tb_view->AddTool(xID_VIEW_SET_WIREFRAME, wxT("Set Render to Wireframe"), xIMG_SET_WIREFRAME);
+    tb_view->AddSeparator();
+    \
+    tb_view->Realize();
 
     // Give this pane an icon, too, just for testing.
     int iconSize = m_mgr.GetArtProvider()->GetMetric(wxAUI_DOCKART_CAPTION_SIZE);
@@ -408,26 +401,17 @@ MyFrame::MyFrame(wxWindow* parent,
     // Make it even to use 16 pixel icons with default 17 caption height.
     iconSize &= ~1;
 
-    m_mgr.AddPane(wnd10, wxAuiPaneInfo().
-                  Name(wxT("test10")).Caption(wxT("Text Pane with Hide Prompt")).
-                  Bottom().Layer(1).Position(1).
-                  Icon(wxArtProvider::GetBitmap(wxART_WARNING,
-                                                wxART_OTHER,
-                                                wxSize(iconSize, iconSize))));
-
-    // create some center panes
-    m_mgr.AddPane(CreatewxOCECntrl(), wxAuiPaneInfo().Name(wxT("text_content")).
-                  CenterPane().Hide());
-
-    m_mgr.AddPane(CreateHTMLCtrl(), wxAuiPaneInfo().Name(wxT("html_content")).
-                  CenterPane().Hide());
-
     m_mgr.AddPane(CreateNotebook(), wxAuiPaneInfo().Name(wxT("notebook_content")).
                   CenterPane().PaneBorder(false));
 
+                  
+    m_mgr.AddPane(tb_view, wxAuiPaneInfo().
+                  Name(wxT("tb_view")).Caption(wxT("View")).
+                  ToolbarPane().Top());
+
     // add the toolbars to the manager
-    m_mgr.AddPane(tb1, wxAuiPaneInfo().
-                  Name(wxT("tb1")).Caption(wxT("Big Toolbar")).
+    m_mgr.AddPane(tb_main, wxAuiPaneInfo().
+                  Name(wxT("tb_main")).Caption(wxT("Main")).
                   ToolbarPane().Top());
 
     // make some default perspectives
@@ -437,9 +421,10 @@ MyFrame::MyFrame(wxWindow* parent,
     for (i = 0, count = all_panes.GetCount(); i < count; ++i)
         if (!all_panes.Item(i).IsToolbar())
             all_panes.Item(i).Hide(); 
-    m_mgr.GetPane(wxT("tb1")).Hide();
+    m_mgr.GetPane(wxT("tb_main")).Show();
+    m_mgr.GetPane(wxT("tb_view")).Show();
     m_mgr.GetPane(wxT("notebook_content")).Show();
-    //m_mgr.GetPane(wxT("text_content")).Show();
+    m_mgr.GetPane(wxT("Welcome")).Show();
 
     // "commit" all changes made to wxAuiManager
     m_mgr.Update();
@@ -449,17 +434,53 @@ MyFrame::MyFrame(wxWindow* parent,
 
 }
 
-MyFrame::~MyFrame()
+MainFrame::~MainFrame()
 {
     m_mgr.UnInit();
 }
 
 
+/***************************************************************************/
+//                                                     VIEW MANAGEMENT CLASSES
+/***************************************************************************/
 
 
+void MainFrame::OnSetToShaded(wxCommandEvent& WXUNUSED(event))
+{
+    GetActiveDocument()->DoSetToShaded();    
+}
+
+void MainFrame::OnSetToWireframe(wxCommandEvent& WXUNUSED(event))
+{
+    GetActiveDocument()->DoSetToWireframe();    
+}
 
 
+void MainFrame::OnZoomIn(wxCommandEvent& WXUNUSED(event))
+{
+    GetActiveDocument()->DoZoomIn();    
+}
 
+void MainFrame::OnZoomOut(wxCommandEvent& WXUNUSED(event))
+{
+    GetActiveDocument()->DoZoomOut();    
+}
+
+void MainFrame::OnZoomFit(wxCommandEvent& WXUNUSED(event))
+{
+    GetActiveDocument()->DoZoomFit();
+}
+
+void MainFrame::OnZoomSelection(wxCommandEvent& WXUNUSED(event))
+{
+    GetActiveDocument()->DoZoomSelection();    
+}
+
+
+void MainFrame::OnCreateBottle(wxCommandEvent& WXUNUSED(event))
+{
+    GetActiveDocument()->CreateBottle();    
+}
 
 
 
@@ -471,7 +492,7 @@ MyFrame::~MyFrame()
     /***************************************************************************/
 
 
-wxString MyFrame::GetIntroText()
+wxString MainFrame::GetIntroText()
 {
     const char* text =
         "<html><body>"
@@ -500,139 +521,28 @@ wxString MyFrame::GetIntroText()
         "<li>Able to create and parent the Open Cascade X11 window into a wxPanel.</li>"
         "</ul>"
         "<p>See README.txt for more information.</p>"
+         "<p><b>wxAUI Demo\n</b></p>"
+        "\n\n<p>An advanced window management library for wxWidgets\n(c) Copyright 2005-2006, Kirix Corporation</p>"
         "</body></html>";
 
     return wxString::FromAscii(text);
 }
 
-wxTextCtrl* MyFrame::CreateTextCtrl(const wxString& ctrl_text)
-{
-    static int n = 0;
-
-    wxString text;
-    if ( !ctrl_text.empty() )
-        text = ctrl_text;
-    else
-        text.Printf(wxT("This is text box %d"), ++n);
-
-    return new wxTextCtrl(this,wxID_ANY, text,
-                          wxPoint(0,0), wxSize(150,90),
-                          wxNO_BORDER | wxTE_MULTILINE);
-}
-
-wxPanel* MyFrame::CreatewxOCECntrl(wxWindow* parent)
+wxPanel* MainFrame::CreatewxOCECntrl(wxWindow* parent)
 {
       if (!parent)
         parent = this;
-
-    wxPanel* ctrl = new wxPanel(parent);
-    
-    
-      TCollection_ExtendedString a3DName ("Visu3D");
-    
-    
-    myViewer = Viewer (ctrl, a3DName.ToExtString(), "", 1000.0, V3d_XposYnegZpos, Standard_True, Standard_True);
- 
-    myViewer->SetDefaultLights();
-    myViewer->SetLightOn();
-    myContext = new AIS_InteractiveContext (myViewer);  
-
-    ////code a simple primitive for display
-    BRepPrimAPI_MakeSphere S(gp_Pnt(100.,300.,200.), 100.);
-    
-    Handle(AIS_Shape) anAISShape = new AIS_Shape(S.Shape());
-    myContext->SetColor(anAISShape,Quantity_NOC_AZURE);
-    myContext->SetMaterial(anAISShape,Graphic3d_NOM_PLASTIC);
-    myContext->SetDisplayMode(anAISShape,1);
-
-    myContext->Display(anAISShape);
-    mView->Redraw();
-    
-    
+        
+    wxOCEWindow* ctrl = new wxOCEWindow( parent, 
+        wxPoint(0, 0),
+        wxSize(-1, -1),
+        0);
     
     return ctrl;
 }
 
 
-// =======================================================================
-// function : Viewer
-// purpose  :
-// =======================================================================
-Handle(V3d_Viewer) MyFrame::Viewer (wxPanel* panel, 
-                                           const Standard_ExtString theName,
-                                           const Standard_CString theDomain,
-                                           const Standard_Real theViewSize,
-                                           const V3d_TypeOfOrientation theViewProj,
-                                           const Standard_Boolean theComputedMode,
-                                           const Standard_Boolean theDefaultComputedMode )
-{
-  static Handle(OpenGl_GraphicDriver) aGraphicDriver;
-
- aDisplayConnection = new Aspect_DisplayConnection();
-  
-if (aGraphicDriver.IsNull())
-  {
-    aDisplayConnection = new Aspect_DisplayConnection ();
-
-    aGraphicDriver = new OpenGl_GraphicDriver (aDisplayConnection);
-  }
-Handle(V3d_Viewer)  v = new V3d_Viewer (aGraphicDriver,
-                         theName,
-                         theDomain,
-                         theViewSize,
-                         theViewProj,
-                         Quantity_NOC_GRAY30,
-                         V3d_ZBUFFER,
-                         V3d_GOURAUD,
-                         V3d_WAIT,
-                         theComputedMode,
-                         theDefaultComputedMode,
-                         V3d_TEX_NONE);
-                         
-    //Create the View
-    mView = v->CreateView();
-    
-    //This works in GTK 1,0 apperantly but breaks in GTK 2.0...need a better solution
-    //GdkWindow* draw_window = GTK_PIZZA(this)->bin_window;
-    
-    //First Retreive the GTK Widget (This is handled differently in MSW and MAC)
-    GtkWidget* widget = panel->GetHandle();
-    
-    // Mandatory. Otherwise, a segfault happens. (Learned this one the hard way)
-    gtk_widget_realize( widget );   
-    
-    //Old Habbts I guess...
-    gtk_widget_set_double_buffered(widget, 0);
-    
-    //Now retireve the X11 Window
-    Window wid = GDK_WINDOW_XWINDOW( widget->window ); 
-   
-    //The above line can be done with the following as well.
-    // Window wid = gdk_x11_drawable_get_xid(gtk_widget_get_window(panel->GetHandle()));
- 
-    XSync(GDK_WINDOW_XDISPLAY(widget->window), False);
-    
-    //Now create the Xw window as a wrapper of the window we've so tirelessly had to go and retreive.
-    wind = new Xw_Window(aDisplayConnection, wid);
-    
-    //Un Comment this line below to create a seperate window (defeats the purpose of this hole exercise though)
-    //Handle(Xw_Window) wind = new Xw_Window(aDisplayConnection,"test", 20,20,400,400);
-    
-    //Now set the Window to the View
-    mView->SetWindow(wind);
-    
-    //Don't forget to Map the Window
-    if(!wind->IsMapped()) wind->Map();
-    
-    //Now Draw the Scene
-    mView->Redraw();
-    
-    panel->Refresh();
-        
-    return v;
-}
-
-wxHtmlWindow* MyFrame::CreateHTMLCtrl(wxWindow* parent)
+wxHtmlWindow* MainFrame::CreateHTMLCtrl(wxWindow* parent)
 {
     if (!parent)
         parent = this;
@@ -644,26 +554,8 @@ wxHtmlWindow* MyFrame::CreateHTMLCtrl(wxWindow* parent)
     return ctrl;
 }
 
-int i = 0;
-void MyFrame::AddSphere(wxCommandEvent& WXUNUSED(evt))
-{
-    i+=150;
-    BRepPrimAPI_MakeSphere S(gp_Pnt(100.,i*2,i), 300.);
-    Handle(AIS_Shape) anAISShape = new AIS_Shape(S.Shape());
-    myContext->SetColor(anAISShape,Quantity_NOC_BLUE2);
-    myContext->SetMaterial(anAISShape,Graphic3d_NOM_DIAMOND);
-    myContext->SetDisplayMode(anAISShape,1);
 
-    myContext->Display(anAISShape);
-    
-
-    mView->FitAll();
-    mView->MustBeResized();
-    
-    mView->Redraw();
-}
-
-wxAuiNotebook* MyFrame::CreateNotebook()
+wxAuiNotebook* MainFrame::CreateNotebook()
 {
    // create the notebook off-window to avoid flicker
    wxSize client_size = GetClientSize();
@@ -672,25 +564,36 @@ wxAuiNotebook* MyFrame::CreateNotebook()
                                     wxPoint(client_size.x, client_size.y),
                                     wxSize(430,200),
                                     m_notebook_style);
+                                    
+    //Using Freeze/Thaw with OCE causes the controls too not render properly.
    //ctrl->Freeze();
 
    wxBitmap page_bmp = wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(16,16));
 
-    m_ntbk->AddPage(CreatewxOCECntrl(m_ntbk), wxT("wxOCE") , false, page_bmp);
-    
-   m_ntbk->AddPage(CreateHTMLCtrl(m_ntbk), wxT("Welcome to wxOCE") , false, page_bmp);
-   m_ntbk->SetPageToolTip(0, "Welcome to wxOCE");
-
+ITEMCOUNT++;
+    m_ntbk->AddPage(CreatewxOCECntrl(m_ntbk), wxString::Format(wxT("newfile%i.wxoce"), ITEMCOUNT) , false, page_bmp);
+   
+   m_mgr.AddPane(CreateHTMLCtrl(), wxAuiPaneInfo().
+                  Name(wxT("Welcome")).Caption(wxT("Welcome to wxOCE")).
+                    MinSize(wxSize(350,100)).                  
+                  Right().CloseButton(true));
+                  
+                  
+    m_mgr.Update();
+   
    //ctrl->Thaw();
    return m_ntbk;
 }
-void MyFrame::OnCreatewxOCECntrl(wxCommandEvent& WXUNUSED(event))
+void MainFrame::OnCreatewxOCECntrl(wxCommandEvent& WXUNUSED(event))
 {
-   m_ntbk->AddPage(CreatewxOCECntrl(m_ntbk), wxT("Welcome to wxAUI"));
+   wxBitmap page_bmp = wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(16,16));
+
+ITEMCOUNT++;
+    m_ntbk->AddPage(CreatewxOCECntrl(m_ntbk),wxString::Format(wxT("newfile%i.wxoce"), ITEMCOUNT), false, page_bmp);
     m_mgr.Update();
 }
 
-void MyFrame::OnCreateHTML(wxCommandEvent& WXUNUSED(event))
+void MainFrame::OnCreateHTML(wxCommandEvent& WXUNUSED(event))
 {
     m_mgr.AddPane(CreateHTMLCtrl(), wxAuiPaneInfo().
                   Caption(wxT("HTML Control")).
@@ -699,7 +602,7 @@ void MyFrame::OnCreateHTML(wxCommandEvent& WXUNUSED(event))
     m_mgr.Update();
 }
 
-void MyFrame::OnCreateNotebook(wxCommandEvent& WXUNUSED(event))
+void MainFrame::OnCreateNotebook(wxCommandEvent& WXUNUSED(event))
 {
     m_mgr.AddPane(CreateNotebook(), wxAuiPaneInfo().
                   Caption(wxT("Notebook")).
@@ -709,44 +612,59 @@ void MyFrame::OnCreateNotebook(wxCommandEvent& WXUNUSED(event))
     m_mgr.Update();
 }
 
-void MyFrame::OnCreateText(wxCommandEvent& WXUNUSED(event))
+
+wxOCEWindow* MainFrame::GetActiveDocument()
 {
-    m_mgr.AddPane(CreateTextCtrl(), wxAuiPaneInfo().
-                  Caption(wxT("Text Control 3")).
-                  Float().FloatingPosition(GetStartPosition()));
-    m_mgr.Update();
+    if(m_ntbk->GetPageCount()>0)
+    {
+        //If it's an OpenGL Pane, then it's a child of the pane
+        if (m_ntbk->GetPage(m_ntbk->GetSelection())->IsKindOf(CLASSINFO(wxOCEWindow)))
+        {
+            return  (wxOCEWindow*)(m_ntbk->GetPage(m_ntbk->GetSelection()));
+        }       
+    }
+    return new wxOCEWindow(this, this->GetPosition(), this->GetSize(), 1);
 }
 
-void MyFrame::OnChangeContentPane(wxCommandEvent& evt)
+
+
+
+
+
+
+
+
+
+
+void MainFrame::OnChangeContentPane(wxCommandEvent& evt)
 {
-    m_mgr.GetPane(wxT("text_content")).Show(evt.GetId() == ID_TextContent);
     m_mgr.GetPane(wxT("html_content")).Show(evt.GetId() == ID_HTMLContent);
     m_mgr.GetPane(wxT("notebook_content")).Show(evt.GetId() == ID_NotebookContent);
     m_mgr.Update();
 }
 
-wxAuiDockArt* MyFrame::GetDockArt()
+wxAuiDockArt* MainFrame::GetDockArt()
 {
     return m_mgr.GetArtProvider();
 }
 
-void MyFrame::DoUpdate()
+void MainFrame::DoUpdate()
 {
     m_mgr.Update();
 }
 
 
-void MyFrame::OnEraseBackground(wxEraseEvent& event)
+void MainFrame::OnEraseBackground(wxEraseEvent& event)
 {
     event.Skip();
 }
 
-void MyFrame::OnSize(wxSizeEvent& event)
+void MainFrame::OnSize(wxSizeEvent& event)
 {
     event.Skip();
 }
 
-void MyFrame::OnSettings(wxCommandEvent& WXUNUSED(evt))
+void MainFrame::OnSettings(wxCommandEvent& WXUNUSED(evt))
 {
     // show the settings pane, and float it
     wxAuiPaneInfo& floating_pane = m_mgr.GetPane(wxT("settings")).Float().Show();
@@ -757,12 +675,12 @@ void MyFrame::OnSettings(wxCommandEvent& WXUNUSED(evt))
     m_mgr.Update();
 }
 
-void MyFrame::OnCustomizeToolbar(wxCommandEvent& WXUNUSED(evt))
+void MainFrame::OnCustomizeToolbar(wxCommandEvent& WXUNUSED(evt))
 {
     wxMessageBox(_("Customize Toolbar clicked"));
 }
 
-void MyFrame::OnGradient(wxCommandEvent& event)
+void MainFrame::OnGradient(wxCommandEvent& event)
 {
     int gradient = 0;
 
@@ -777,7 +695,7 @@ void MyFrame::OnGradient(wxCommandEvent& event)
     m_mgr.Update();
 }
 
-void MyFrame::OnToolbarResizing(wxCommandEvent& WXUNUSED(evt))
+void MainFrame::OnToolbarResizing(wxCommandEvent& WXUNUSED(evt))
 {
     wxAuiPaneInfoArray& all_panes = m_mgr.GetAllPanes();
     const size_t count = all_panes.GetCount();
@@ -793,7 +711,7 @@ void MyFrame::OnToolbarResizing(wxCommandEvent& WXUNUSED(evt))
     m_mgr.Update();
 }
 
-void MyFrame::OnManagerFlag(wxCommandEvent& event)
+void MainFrame::OnManagerFlag(wxCommandEvent& event)
 {
     unsigned int flag = 0;
 
@@ -843,7 +761,7 @@ void MyFrame::OnManagerFlag(wxCommandEvent& event)
 }
 
 
-void MyFrame::OnNotebookFlag(wxCommandEvent& event)
+void MainFrame::OnNotebookFlag(wxCommandEvent& event)
 {
     int id = event.GetId();
 
@@ -921,7 +839,7 @@ void MyFrame::OnNotebookFlag(wxCommandEvent& event)
 }
 
 
-void MyFrame::OnUpdateUI(wxUpdateUIEvent& event)
+void MainFrame::OnUpdateUI(wxUpdateUIEvent& event)
 {
     unsigned int flags = m_mgr.GetFlags();
 
@@ -1021,14 +939,14 @@ void MyFrame::OnUpdateUI(wxUpdateUIEvent& event)
     }
 }
 
-void MyFrame::OnAllowNotebookDnD(wxAuiNotebookEvent& evt)
+void MainFrame::OnAllowNotebookDnD(wxAuiNotebookEvent& evt)
 {
     // for the purpose of this test application, explicitly
     // allow all noteboko drag and drop events
     evt.Allow();
 }
 
-wxPoint MyFrame::GetStartPosition()
+wxPoint MainFrame::GetStartPosition()
 {
     static int x = 0;
     x += 20;
@@ -1037,7 +955,7 @@ wxPoint MyFrame::GetStartPosition()
 }
 
 
-void MyFrame::OnTabAlignment(wxCommandEvent &evt)
+void MainFrame::OnTabAlignment(wxCommandEvent &evt)
 {
     size_t i, count;
     wxAuiPaneInfoArray& all_panes = m_mgr.GetAllPanes();
@@ -1061,25 +979,36 @@ void MyFrame::OnTabAlignment(wxCommandEvent &evt)
     }
 }
 
-void MyFrame::OnExit(wxCommandEvent& WXUNUSED(event))
+void MainFrame::OnExit(wxCommandEvent& WXUNUSED(event))
 {
     Close(true);
 }
 
-void MyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
+
+void MainFrame::OnInfo(wxCommandEvent& WXUNUSED(event))
+{
+    if(m_mgr.GetPane(wxT("Welcome")).IsShown())   
+        m_mgr.GetPane(wxT("Welcome")).Hide();
+    else        
+        m_mgr.GetPane(wxT("Welcome")).Show();
+        
+        m_mgr.Update();
+}
+
+void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {    
         //wxUnusedVar(event);
     wxAboutDialogInfo info;
-    info.SetName("OpenCascade in wxWidgets");
+    info.SetName("wxOCE");
     info.SetCopyright(_("wxOCE (C) Virtex Edge Design"));
-    info.SetLicence(_("GPL v2 or later"));
+    info.AddDeveloper("R. T. Roe (rtrawr)");
+    info.SetVersion(" - v. 0.3.0");
+    info.SetWebSite("https://github.com/rtrawr/wxOCE");
+    info.SetLicence(_("Attribution-ShareAlike 4.0 International.\n\nSee Github for Full License."));
     info.SetDescription(_("wxOCE is an implementation of OpenCasecade integrated into "
-        "the wxWidgets GUI system. \nWith wxOCE, developers can create CAD programs using the Open Casecade framework"
-        "with wxWidgets as the cross platform GUI Backend. This was originallty done as a proof of concept for the I.R.I.S. CAD "
-        "system devloped by Virtex Edge Design. \n\n\n There are a number of tutorials and examples "
+        "the wxWidgets GUI system. \n\n\n There are a number of tutorials and examples "
         "for Qt, MFC etc, but very few that showed it clearly how to get it working "
         "under the wxWidgets system. This sample app has been created in hopes to help others " 
-        "who are trying to do the same as us."
-    "\n\n\nwxAUI Demo\nAn advanced window management library for wxWidgets\n(c) Copyright 2005-2006, Kirix Corporation"));
+        "who are trying to do the same as us."));
     ::wxAboutBox(info);
 }

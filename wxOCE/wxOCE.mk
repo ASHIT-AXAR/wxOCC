@@ -5,8 +5,8 @@
 ## Debug
 ProjectName            :=wxOCE
 ConfigurationName      :=Debug
-WorkspacePath          := "/home/dax/Documents/repos/wxOCE"
-ProjectPath            := "/home/dax/Documents/repos/wxOCE/wxOCE"
+WorkspacePath          := "/home/dax/Documents/scratch/wxOCE"
+ProjectPath            := "/home/dax/Documents/scratch/wxOCE/wxOCE"
 IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
@@ -39,8 +39,8 @@ LinkOptions            :=  $(shell wx-config --debug=yes --libs --unicode=yes)`w
 IncludePath            :=  $(IncludeSwitch). $(IncludeSwitch)/usr/local/include/oce $(IncludeSwitch)/usr/include/gtk-2.0 
 IncludePCH             := 
 RcIncludePath          := 
-Libs                   := $(LibrarySwitch)GL $(LibrarySwitch)X11 $(LibrarySwitch)TKService $(LibrarySwitch)TKernel $(LibrarySwitch)TKMath $(LibrarySwitch)TKBRep $(LibrarySwitch)TKV3d $(LibrarySwitch)TKOpenGl $(LibrarySwitch)TKTopAlgo 
-ArLibs                 :=  "GL" "X11" "libTKService.so" "libTKernel.so" "libTKMath.so" "libTKBRep.so" "libTKV3d.so" "libTKOpenGl.so" "libTKTopAlgo.so" 
+Libs                   := $(LibrarySwitch)X11 $(LibrarySwitch)TKService $(LibrarySwitch)TKernel $(LibrarySwitch)TKMath $(LibrarySwitch)TKBRep $(LibrarySwitch)TKV3d $(LibrarySwitch)TKOpenGl $(LibrarySwitch)TKTopAlgo $(LibrarySwitch)TKSTEP $(LibrarySwitch)TKXSBase $(LibrarySwitch)TKGeomBase $(LibrarySwitch)TKG3d $(LibrarySwitch)TKG2d 
+ArLibs                 :=  "X11" "libTKService.so" "libTKernel.so" "libTKMath.so" "libTKBRep.so" "libTKV3d.so" "libTKOpenGl.so" "libTKTopAlgo.so" "libTKSTEP.so" "libTKXSBase.so" "libTKGeomBase.so" "libTKG3d.so" "libTKG2d.so" 
 LibPath                := $(LibraryPathSwitch). $(LibraryPathSwitch)/usr/local/lib 
 
 ##
@@ -61,7 +61,7 @@ AS       := /usr/bin/as
 ##
 CodeLiteDir:=/usr/share/codelite
 LD_LIBRARY_PATH:=/home/dax/Dropbox/code/vrtx/lib/vxGUI/bin/linux/Debug:/home/dax/Dropbox/code/vrtx/lib/vxGL/bin/linux/Debug:/home/dax/Dropbox/code/vrtx/lib/vxPad/bin/linux/Debug:$LD_LIBRARY_PATH
-Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_vxOCE.cpp$(ObjectSuffix) 
 
 
 
@@ -88,13 +88,21 @@ PreBuild:
 ##
 ## Objects
 ##
-$(IntermediateDirectory)/main.cpp$(ObjectSuffix): main.cpp $(IntermediateDirectory)/main.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/dax/Documents/repos/wxOCE/wxOCE/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/main.cpp$(DependSuffix): main.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/main.cpp$(DependSuffix) -MM "main.cpp"
+$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix): src/main.cpp $(IntermediateDirectory)/src_main.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/dax/Documents/scratch/wxOCE/wxOCE/src/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_main.cpp$(DependSuffix): src/main.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_main.cpp$(DependSuffix) -MM "src/main.cpp"
 
-$(IntermediateDirectory)/main.cpp$(PreprocessSuffix): main.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.cpp$(PreprocessSuffix) "main.cpp"
+$(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix): src/main.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix) "src/main.cpp"
+
+$(IntermediateDirectory)/src_vxOCE.cpp$(ObjectSuffix): src/vxOCE.cpp $(IntermediateDirectory)/src_vxOCE.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/dax/Documents/scratch/wxOCE/wxOCE/src/vxOCE.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_vxOCE.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_vxOCE.cpp$(DependSuffix): src/vxOCE.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_vxOCE.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_vxOCE.cpp$(DependSuffix) -MM "src/vxOCE.cpp"
+
+$(IntermediateDirectory)/src_vxOCE.cpp$(PreprocessSuffix): src/vxOCE.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_vxOCE.cpp$(PreprocessSuffix) "src/vxOCE.cpp"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)
