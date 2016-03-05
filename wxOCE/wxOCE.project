@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CodeLite_Project Name="wxOCETest" InternalType="GUI">
+<CodeLite_Project Name="wxOCE" InternalType="GUI">
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
     <File Name="main.cpp"/>
-    <File Name="MainFrame.cpp"/>
-    <File Name="wxcrafter.cpp"/>
-    <File Name="wxcrafter_bitmaps.cpp"/>
-  </VirtualDirectory>
-  <VirtualDirectory Name="include">
-    <File Name="MainFrame.h"/>
-    <File Name="wxcrafter.h"/>
-  </VirtualDirectory>
-  <VirtualDirectory Name="resources">
-    <File Name="wxcrafter.wxcp"/>
-    <File Name="win_resources.rc"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -27,12 +16,11 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-O0;-Wall;$(shell wx-config --cflags --debug);$(shell pkg-config --libs --cflags gtk+-2.0); $(shell pkg-config --libs --cflags glib-2.0)" C_Options="-g;-O0;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-g;-O0;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes);$(shell pkg-config --libs --cflags gtk+-2.0);$(shell pkg-config --libs --cflags glib-2.0)" C_Options="-g;-O0;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes);;$(shell pkg-config --libs --cflags gtk+-2.0);$(shell pkg-config --libs --cflags glib-2.0)" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="/usr/local/include/oce"/>
         <IncludePath Value="/usr/include/gtk-2.0"/>
-        <Preprocessor Value="__WX__"/>
       </Compiler>
-      <Linker Options="$(shell wx-config --libs --debug);;;$(shell pkg-config --libs --cflags gtk+-2.0); $(shell pkg-config --libs --cflags glib-2.0);-lTKernel;-lTKMath;-lTKBRep;-lTKTopAlgo;-lTKPrim;-lTKBO;-lTKOffset;-lTKService;-lTKV3d;-lTKOpenGl;-lTKFillet;`wx-config --libs --gl-libs` -lGL -lGLU -lglut -lstdc++" Required="yes">
+      <Linker Options="$(shell wx-config --debug=yes --libs --unicode=yes)`wx-config --libs propgrid,core,base`;`wx-config --cxxflags`;`wx-config --libs`;`wx-config --libs aui`;`wx-config --libs --gl-libs` -lGL -lGLU -lglut -lstdc++;`wx-config --libs std stc`;`wx-config --libs ribbon;`$(shell pkg-config --libs --cflags gtk+-2.0);$(shell pkg-config --libs --cflags glib-2.0);-lTKernel;-lTKMath;-lTKBRep;-lTKTopAlgo;-lTKPrim;-lTKBO;-lTKOffset;-lTKService;-lTKV3d;-lTKOpenGl;-lTKFillet;`wx-config --libs --gl-libs` -lGL -lGLU -lglut -lstdc++" Required="yes">
         <LibraryPath Value="/usr/local/lib"/>
         <Library Value="GL"/>
         <Library Value="X11"/>
@@ -45,7 +33,7 @@
         <Library Value="libTKTopAlgo.so"/>
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="no" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
       </Environment>
@@ -78,13 +66,12 @@
       </Completion>
     </Configuration>
     <Configuration Name="Release" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O2;-Wall;$(shell wx-config --cflags)" C_Options="-O2;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
-        <IncludePath Value="."/>
+      <Compiler Options="-O2;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no)" C_Options="-O2;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no)" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <Preprocessor Value="NDEBUG"/>
       </Compiler>
-      <Linker Options="$(shell wx-config --libs)" Required="yes"/>
+      <Linker Options="-s;$(shell wx-config --debug=no --libs --unicode=yes)" Required="yes"/>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="no" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
       </Environment>

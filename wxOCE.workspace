@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="wxOCE" Database="wxOCE.tags">
-  <Project Name="wxOCETest" Path="wxOCE/wxOCETest.project" Active="Yes"/>
+  <Project Name="wxOCE" Path="wxOCE/wxOCE.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
-      <Project Name="wxOCETest" ConfigName="Debug"/>
+      <Project Name="wxOCE" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
-      <Project Name="wxOCETest" ConfigName="Release"/>
+      <Project Name="wxOCE" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
