@@ -8,6 +8,7 @@ With wxOCE, developers can create CAD programs using the Open Casecade framework
 ## Versions
 ### V. 0.3.0
 * Encapsulated wxOCE Into it's own Control (wxOCWindow).
+* Creates the OpenCascade Demo Bottle on start.
 * Extended wxAUI Integration.
 * Added Zoom In, Out, Fit Controls.
 * Added Wireframe/Shaded Render Toggle Controls.
