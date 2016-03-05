@@ -1,6 +1,6 @@
 # Welcome to wxOCE
 # Overview
-wxOCE is an implementation of OpenCasecade integrated into the wxWidgets GUI system. There are a number of tutorials and examples for Qt, MFC etc, but very few that showed it clearly how to get it working under the wxWidgets system under Linux. This was originallty done as a proof of concept for the I.R.I.S. CAD system devloped by Virtex Edge Design. This sample app has been created in hopes to help others who are trying to do the same as us.
+wxOCE is an implementation of OpenCascade integrated into the wxWidgets GUI system. There are a number of tutorials and examples for Qt, MFC etc, but very few that showed it clearly how to get it working under the wxWidgets system under Linux. This was originallty done as a proof of concept for the I.R.I.S. CAD system devloped by Virtex Edge Design. This sample app has been created in hopes to help others who are trying to do the same as us.
 ## Features
 With wxOCE, developers can create CAD programs using the Open Casecade framework.with wxWidgets as the cross platform GUI Backend. 
 ## License
