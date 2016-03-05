@@ -35,9 +35,9 @@
       <ul>
         <li>The first working version of wxOCE.</li>
         <li>Able to create and parent the Open Cascade X11 window into a wxPanel.</li>
-        <li>Able to create and parent the Open Cascade X11 window into a wxPanel.</li>
       </ul>
     <h2>wxAUI Demo</h2>
-    <p>An advanced window management library for wxWidgets\n(c) Copyright 2005-2006, Kirix Corporation</p>
+    <p>An advanced window management library for wxWidgets
+      (c) Copyright 2005-2006, Kirix Corporation</p>
     </body>
 </html>
