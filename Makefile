@@ -1,8 +1,8 @@
 .PHONY: clean All
 
 All:
-	@echo "----------Building project:[ wxOCE - Debug ]----------"
-	@cd "wxOCE" && $(MAKE) -f  "wxOCE.mk"
+	@echo "----------Building project:[ wxOCC - Debug ]----------"
+	@cd "wxOCC" && $(MAKE) -f  "wxOCC.mk"
 clean:
-	@echo "----------Cleaning project:[ wxOCE - Debug ]----------"
-	@cd "wxOCE" && $(MAKE) -f  "wxOCE.mk" clean
+	@echo "----------Cleaning project:[ wxOCC - Debug ]----------"
+	@cd "wxOCC" && $(MAKE) -f  "wxOCC.mk" clean
