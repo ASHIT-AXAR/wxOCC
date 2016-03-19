@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="wxOCC" InternalType="GUI">
   <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00010001N0005Debug000000000000]]>
+    </Plugin>
     <Plugin Name="CMakePlugin">
       <![CDATA[[{
   "name": "Debug",
@@ -13,9 +16,6 @@
   "parentProject": ""
  }]]]>
     </Plugin>
-    <Plugin Name="qmake">
-      <![CDATA[00010001N0005Debug000000000000]]>
-    </Plugin>
   </Plugins>
   <Description/>
   <Dependencies/>
@@ -23,12 +23,14 @@
   <Dependencies Name="Release"/>
   <VirtualDirectory Name="include">
     <File Name="include/wxOCC.h"/>
-    <File Name="include/wxCstmTabArt.h"/>
+    <File Name="include/vxCstmArtPrvdr_NtbkTab.h"/>
+    <File Name="include/vxCstmArtPrvdr_AUIToolbar.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="src">
     <File Name="src/main.cpp"/>
     <File Name="src/wxOCC.cpp"/>
-    <File Name="src/wxCstmTabArt.cpp"/>
+    <File Name="src/vxCstmArtPrvdr_NtbkTab.cpp"/>
+    <File Name="src/vxCstmArtPrvdr_AUIToolbar.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

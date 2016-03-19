@@ -60,7 +60,7 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_wxOCC.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_wxCstmTabArt.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_wxOCC.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_vxCstmArtPrvdr_NtbkTab.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_vxCstmArtPrvdr_AUIToolbar.cpp$(ObjectSuffix) 
 
 
 
@@ -107,13 +107,21 @@ $(IntermediateDirectory)/src_wxOCC.cpp$(DependSuffix): src/wxOCC.cpp
 $(IntermediateDirectory)/src_wxOCC.cpp$(PreprocessSuffix): src/wxOCC.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_wxOCC.cpp$(PreprocessSuffix) "src/wxOCC.cpp"
 
-$(IntermediateDirectory)/src_wxCstmTabArt.cpp$(ObjectSuffix): src/wxCstmTabArt.cpp $(IntermediateDirectory)/src_wxCstmTabArt.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/media/tuxbox/Drive/Documents/code/repos/wxOCC/wxOCC/src/wxCstmTabArt.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_wxCstmTabArt.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/src_wxCstmTabArt.cpp$(DependSuffix): src/wxCstmTabArt.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_wxCstmTabArt.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_wxCstmTabArt.cpp$(DependSuffix) -MM "src/wxCstmTabArt.cpp"
+$(IntermediateDirectory)/src_vxCstmArtPrvdr_NtbkTab.cpp$(ObjectSuffix): src/vxCstmArtPrvdr_NtbkTab.cpp $(IntermediateDirectory)/src_vxCstmArtPrvdr_NtbkTab.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/media/tuxbox/Drive/Documents/code/repos/wxOCC/wxOCC/src/vxCstmArtPrvdr_NtbkTab.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_vxCstmArtPrvdr_NtbkTab.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_vxCstmArtPrvdr_NtbkTab.cpp$(DependSuffix): src/vxCstmArtPrvdr_NtbkTab.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_vxCstmArtPrvdr_NtbkTab.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_vxCstmArtPrvdr_NtbkTab.cpp$(DependSuffix) -MM "src/vxCstmArtPrvdr_NtbkTab.cpp"
 
-$(IntermediateDirectory)/src_wxCstmTabArt.cpp$(PreprocessSuffix): src/wxCstmTabArt.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_wxCstmTabArt.cpp$(PreprocessSuffix) "src/wxCstmTabArt.cpp"
+$(IntermediateDirectory)/src_vxCstmArtPrvdr_NtbkTab.cpp$(PreprocessSuffix): src/vxCstmArtPrvdr_NtbkTab.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_vxCstmArtPrvdr_NtbkTab.cpp$(PreprocessSuffix) "src/vxCstmArtPrvdr_NtbkTab.cpp"
+
+$(IntermediateDirectory)/src_vxCstmArtPrvdr_AUIToolbar.cpp$(ObjectSuffix): src/vxCstmArtPrvdr_AUIToolbar.cpp $(IntermediateDirectory)/src_vxCstmArtPrvdr_AUIToolbar.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/media/tuxbox/Drive/Documents/code/repos/wxOCC/wxOCC/src/vxCstmArtPrvdr_AUIToolbar.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_vxCstmArtPrvdr_AUIToolbar.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_vxCstmArtPrvdr_AUIToolbar.cpp$(DependSuffix): src/vxCstmArtPrvdr_AUIToolbar.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_vxCstmArtPrvdr_AUIToolbar.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_vxCstmArtPrvdr_AUIToolbar.cpp$(DependSuffix) -MM "src/vxCstmArtPrvdr_AUIToolbar.cpp"
+
+$(IntermediateDirectory)/src_vxCstmArtPrvdr_AUIToolbar.cpp$(PreprocessSuffix): src/vxCstmArtPrvdr_AUIToolbar.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_vxCstmArtPrvdr_AUIToolbar.cpp$(PreprocessSuffix) "src/vxCstmArtPrvdr_AUIToolbar.cpp"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

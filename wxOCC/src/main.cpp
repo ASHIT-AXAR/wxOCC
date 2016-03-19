@@ -10,7 +10,8 @@
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 #include <wx/aboutdlg.h>
-#include "../include/wxCstmTabArt.h"
+#include "../include/vxCstmArtPrvdr_AUIToolbar.h"
+#include "../include/vxCstmArtPrvdr_NtbkTab.h"
 
 #ifdef __BORLANDC__
 #pragma hdrstop
@@ -201,7 +202,10 @@ private:
     wxMenu* m_perspectives_menu;
     long m_notebook_style;
     long m_notebook_theme;
-
+ wxAuiToolBar* tb_main ;
+ wxAuiToolBar* tb_view;
+    wxAuiToolBarArt* old_art;
+    
     DECLARE_EVENT_TABLE()
 };
 
@@ -359,10 +363,10 @@ MainFrame::MainFrame(wxWindow* parent,
 
     // Maximizes the window
     wxTopLevelWindow::Maximize(true);
-
+    
     //  Create Toolbars
     /***************************************************************************/
-    wxAuiToolBar* tb_main = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE);
+     tb_main = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE);
     tb_main->SetToolBitmapSize(wxSize(48, 48));
     tb_main->AddTool(xID_FILE_NEW, wxT("New"), wxArtProvider::GetBitmap(wxART_NEW));
     // tb_main->AddTool(ID_SampleItem+2, wxT("Open"), wxArtProvider::GetBitmap(wxART_FILE_OPEN));
@@ -371,9 +375,13 @@ MainFrame::MainFrame(wxWindow* parent,
     tb_main->AddSeparator();
     tb_main->AddTool(wxID_INFO, wxT("Info"), wxArtProvider::GetBitmap(wxART_INFORMATION));
     tb_main->AddTool(wxID_ABOUT, wxT("About"), wxArtProvider::GetBitmap(wxART_HELP));
+   // old_art = tb_main->GetArtProvider();
+    tb_main->SetArtProvider(new vxCstmArtPrvdr_AUIToolbar());
+    tb_main->SetBackgroundColour(wxColour(255, 0, 0));
+    
     tb_main->Realize();
 
-    wxAuiToolBar* tb_view = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE);
+    tb_view = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE);
     tb_view->SetToolBitmapSize(wxSize(48, 48));
     tb_view->AddTool(xID_VIEW_ZOOM_IN, wxT("Zoom In"), xIMG_ZOOM_IN);
     tb_view->AddTool(xID_VIEW_ZOOM_OUT, wxT("Zoom Out"), xIMG_ZOOM_OUT);
@@ -383,6 +391,7 @@ MainFrame::MainFrame(wxWindow* parent,
     tb_view->AddTool(xID_VIEW_SET_SHADED, wxT("Set Render to Shaded"), xIMG_SET_SHADED);
     tb_view->AddTool(xID_VIEW_SET_WIREFRAME, wxT("Set Render to Wireframe"), xIMG_SET_WIREFRAME);
     tb_view->AddSeparator();
+    tb_view->SetArtProvider(new vxCstmArtPrvdr_AUIToolbar());
 
     tb_view->Realize();
 
@@ -410,17 +419,61 @@ MainFrame::MainFrame(wxWindow* parent,
     m_mgr.GetPane(wxT("tb_view")).Show();
     m_mgr.GetPane(wxT("notebook_content")).Show();
     m_mgr.GetPane(wxT("Welcome")).Show();
-
+    
+    wxAuiPaneInfoArray panes = m_mgr.GetAllPanes();
+    for ( size_t i = 0; i < panes.GetCount(); i++ )
+    {
+        m_mgr.GetPane(panes.Item(i).name).PaneBorder( false );
+    }
     // "commit" all changes made to wxAuiManager
     m_mgr.Update();
     
+        cout<<"Setting Theme...";
+        
+        
+        
+        wxColour BackgroundColour(50,50,50);
+        wxColour ForegroundColour(150,150,150);
+        wxColour Controls_Header(255, 150, 25);
+        
+        GetStatusBar()->SetBackgroundColour(BackgroundColour);
+        GetStatusBar()->SetForegroundColour(ForegroundColour);
+        
+    //Set AUI
+    GetDockArt()->SetColor(wxAUI_DOCKART_BACKGROUND_COLOUR, BackgroundColour);
+    GetDockArt()->SetColor(wxAUI_DOCKART_BORDER_COLOUR, BackgroundColour);
+    GetDockArt()->SetColor(wxAUI_DOCKART_GRIPPER_COLOUR, BackgroundColour);
+    GetDockArt()->SetColor(wxAUI_DOCKART_SASH_COLOUR, BackgroundColour);
+    GetDockArt()->SetColor(wxAUI_DOCKART_INACTIVE_CAPTION_COLOUR, Controls_Header.ChangeLightness(125));
+    GetDockArt()->SetColor(wxAUI_DOCKART_INACTIVE_CAPTION_GRADIENT_COLOUR, Controls_Header);
+
+    m_mgr.Update();
+
+
+//    art->SetButtonHighliteColour(LIST_Theme.at(SelectedThemeIndex)->ToolBar_Colour_ButtonHighLite);
+//    art->SetToolBarBaseColour(LIST_Theme.at(SelectedThemeIndex)->ToolBar_Colour_Base);
+//
+//    for(std::vector<wxAuiToolBar*>::iterator it = LIST_ToolBars.begin(); it != LIST_ToolBars.end(); ++it)
+//    {
+//        (*it)->Refresh();
+//    }
+
+
     
-    m_ntbk->SetArtProvider(new wxCstmTabArt);
+    cout<<"Done!"<<endl;
+    
+    m_ntbk->SetArtProvider(new DefaultTabArt);
+    m_ntbk->SetBackgroundColour(BackgroundColour);
+    
     m_ntbk->Refresh();
 }
 
 MainFrame::~MainFrame()
 {
+    //tb_main->SetArtProvider(old_art);
+    tb_main->Destroy();
+    tb_view->Destroy();
+    
     m_mgr.UnInit();
 }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Session Name="/media/tuxbox/Drive/Documents/code/repos/wxOCC/wxOCC.workspace">
-  <int Value="4" Name="m_selectedTab"/>
+  <int Value="1" Name="m_selectedTab"/>
   <wxString Value="/media/tuxbox/Drive/Documents/code/repos/wxOCC/wxOCC.workspace" Name="m_workspaceName"/>
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
@@ -12,8 +12,8 @@
     </TabInfo>
     <TabInfo>
       <wxString Value="/media/tuxbox/Drive/Documents/code/repos/wxOCC/wxOCC/src/main.cpp" Name="FileName"/>
-      <int Value="3" Name="FirstVisibleLine"/>
-      <int Value="12" Name="CurrentLine"/>
+      <int Value="436" Name="FirstVisibleLine"/>
+      <int Value="434" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
@@ -25,23 +25,16 @@
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
-      <wxString Value="/media/tuxbox/Drive/Documents/code/repos/wxOCC/wxOCC/include/wxCstmTabArt.h" Name="FileName"/>
-      <int Value="90" Name="FirstVisibleLine"/>
-      <int Value="90" Name="CurrentLine"/>
+      <wxString Value="/media/tuxbox/Drive/Documents/code/repos/wxOCC/wxOCC/src/vxCstmArtPrvdr_AUIToolbar.cpp" Name="FileName"/>
+      <int Value="259" Name="FirstVisibleLine"/>
+      <int Value="269" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
-      <wxString Value="/media/tuxbox/Drive/Documents/code/repos/wxOCC/wxOCC/src/wxCstmTabArt.cpp" Name="FileName"/>
-      <int Value="163" Name="FirstVisibleLine"/>
-      <int Value="174" Name="CurrentLine"/>
-      <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds"/>
-    </TabInfo>
-    <TabInfo>
-      <wxString Value="/usr/include/wx-3.0/wx/gtk/colour.h" Name="FileName"/>
-      <int Value="15" Name="FirstVisibleLine"/>
-      <int Value="25" Name="CurrentLine"/>
+      <wxString Value="/media/tuxbox/Drive/Documents/code/repos/wxOCC/wxOCC/include/vxCstmArtPrvdr_AUIToolbar.h" Name="FileName"/>
+      <int Value="89" Name="FirstVisibleLine"/>
+      <int Value="102" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>

@@ -1,1 +1,1 @@
-./Debug/src_main.cpp.o ./Debug/src_wxOCC.cpp.o ./Debug/src_wxCstmTabArt.cpp.o
+./Debug/src_main.cpp.o ./Debug/src_wxOCC.cpp.o ./Debug/src_vxCstmArtPrvdr_NtbkTab.cpp.o ./Debug/src_vxCstmArtPrvdr_AUIToolbar.cpp.o
