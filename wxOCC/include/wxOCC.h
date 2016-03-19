@@ -5,7 +5,7 @@
 #include <wx/event.h>
 
 #ifdef __BORLANDC__
-    #pragma hdrstop
+#pragma hdrstop
 #endif
 
 #include "wx/app.h"
@@ -36,6 +36,9 @@
 #include <AIS_Trihedron.hxx>
 #include <AIS_Shape.hxx>
 #include <Aspect_Handle.hxx>
+#include <TColgp_Array2OfPnt.hxx>
+#include <Geom_BezierSurface.hxx>
+
 #include <BRepPrimAPI_MakeCylinder.hxx>
 #include <BRepPrimAPI_MakeSphere.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
@@ -67,7 +70,8 @@
 #include <gp_Pnt.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Lin.hxx>
-#include <Graphic3d_NameOfMaterial.hxx>  
+#include <gp_Circ.hxx>
+#include <Graphic3d_NameOfMaterial.hxx>
 #include <OpenGl_GraphicDriver.hxx>
 #include <Prs3d_ShadingAspect.hxx>
 #include <Standard_ErrorHandler.hxx>
@@ -90,50 +94,45 @@
 #include <gtk/gtk.h>
 
 ////////////////////////////////////////////////////////////
-//Name : wxOCCWindow
-//Usage : This is the main window which will display CAD
+// Name : wxOCCWindow
+// Usage : This is the main window which will display CAD
 //	objects. For the user to work with the mouse,
 // the window must be able to receive mouse events,
 //	this is possible because wxScrolledWindow is
 // derived from wxWindow, which receives mouse evts
 ////////////////////////////////////////////////////////////
 
-enum
-{
-    TIMER_ID= 10
-};
+enum { TIMER_ID = 10 };
 
 enum CurAction3d {
-CurAction3d_Nothing,
-CurAction3d_WindowZooming,
-CurAction3d_DynamicPanning,
-CurAction3d_DynamicRotation
+    CurAction3d_Nothing,
+    CurAction3d_WindowZooming,
+    CurAction3d_DynamicPanning,
+    CurAction3d_DynamicRotation
 };
 
-class wxOCCWindow: public wxScrolledWindow
+class wxOCCWindow : public wxScrolledWindow
 {
 public:
+    ////////////////////////////////////////////////////////////
+    // Name : wxOCCWindow
+    // Usage : Constructor. Initializes the wxScrolledWindow
+    // from which it is derived
+    ////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
-//Name : wxOCCWindow
-//Usage : Constructor. Initializes the wxScrolledWindow
-// from which it is derived
-////////////////////////////////////////////////////////////
+    wxOCCWindow(wxWindow* parent, const wxPoint& pos, const wxSize& size, long style);
 
-wxOCCWindow(wxWindow *parent, const wxPoint& pos, const wxSize& size, long style);
+    ~wxOCCWindow();
 
-~wxOCCWindow();
+    wxPanel* ctrl;
 
-wxPanel* ctrl ;
+    ////////////////////////////////////////////////////////////
+    // Name : OnDraw
+    // Usage : This function is called whenever the window is
+    // invalidated e.g if a window on top of it is moved
+    ////////////////////////////////////////////////////////////
 
-
-////////////////////////////////////////////////////////////
-//Name : OnDraw
-//Usage : This function is called whenever the window is
-// invalidated e.g if a window on top of it is moved
-////////////////////////////////////////////////////////////
-
-virtual void OnDraw(wxDC& dc);
+    virtual void OnDraw(wxDC& dc);
 
     void DoSetToShaded();
     void DoSetToWireframe();
@@ -141,101 +140,96 @@ virtual void OnDraw(wxDC& dc);
     void DoZoomOut();
     void DoZoomFit();
     void DoZoomSelection();
-    
+
     void CreateBottle();
 
-////////////////////////////Cascade/////////////////////////////
+    ////////////////////////////Cascade/////////////////////////////
 
     Handle(Xw_Window) wind;
     Handle(Aspect_DisplayConnection) aDisplayConnection;
-	Handle(V3d_Viewer) myViewer;
-    
+    Handle(V3d_Viewer) myViewer;
+
     //! the occ view.
     Handle(V3d_View) mView;
-	Handle(AIS_InteractiveContext) myContext;
-    
-    Handle(V3d_Viewer)             Viewer (wxWindow* panel, 
-                                        const Standard_ExtString theName,
-                                         const Standard_CString theDomain,
-                                         const Standard_Real theViewSize,
-                                         const V3d_TypeOfOrientation theViewProj,
-                                         const Standard_Boolean theComputedMode,
-                                         const Standard_Boolean theDefaultComputedMode );
+    Handle(AIS_InteractiveContext) myContext;
 
-TopoDS_Shape MakeBottle(const Standard_Real myWidth, const Standard_Real myHeight, const Standard_Real myThickness);
-//////////////////////////////////////////////
-// Begin*
-// Following variables are used in functions
-// that respond to the mouse events pan,
-// rotate, zoom, select
-//////////////////////////////////////////////
+    Handle(V3d_Viewer) Viewer(wxWindow* panel,
+                              const Standard_ExtString theName,
+                              const Standard_CString theDomain,
+                              const Standard_Real theViewSize,
+                              const V3d_TypeOfOrientation theViewProj,
+                              const Standard_Boolean theComputedMode,
+                              const Standard_Boolean theDefaultComputedMode);
 
-CurAction3d CurMode;
+    TopoDS_Shape MakeBottle(const Standard_Real myWidth, const Standard_Real myHeight, const Standard_Real myThickness);
+    //////////////////////////////////////////////
+    // Begin*
+    // Following variables are used in functions
+    // that respond to the mouse events pan,
+    // rotate, zoom, select
+    //////////////////////////////////////////////
 
-long myXmin;
-long myYmin;
-long myXmax;
-long myYmax;
-long xMouse;
-long yMouse;
+    CurAction3d CurMode;
 
-
+    long myXmin;
+    long myYmin;
+    long myXmax;
+    long myYmax;
+    long xMouse;
+    long yMouse;
 
     /***************************************************************************/
     //                                              Event-Table Functions
     /***************************************************************************/
-    
-//Input Related Methods
-void OnLeftDown(wxMouseEvent& event);
-void OnLeftUp(wxMouseEvent& event);
-void OnMotion(wxMouseEvent& event);
-void OnRightDown(wxMouseEvent& event);
-void OnRightUp(wxMouseEvent& event);
-void OnKeyboard(wxKeyEvent& event);
-void CurMove(long& xcoord, //makes the Cascade AIS objects
-long& ycoord); // alive to mouse movements
 
-void CtrlZoom(long x1, // Ctrl +Left mouse down
-long y1, // for zooming
-long x2,
-long y2);
+    // Input Related Methods
+    void OnLeftDown(wxMouseEvent& event);
+    void OnLeftUp(wxMouseEvent& event);
+    void OnMotion(wxMouseEvent& event);
+    void OnRightDown(wxMouseEvent& event);
+    void OnRightUp(wxMouseEvent& event);
+    void OnKeyboard(wxKeyEvent& event);
+    void CurMove(long& xcoord, // makes the Cascade AIS objects
+                 long& ycoord); // alive to mouse movements
 
-void CtrlRotate(long& xcoord, // Ctrl+Right mouse down
-long& ycoord); // for rotating
+    void CtrlZoom(long x1, // Ctrl +Left mouse down
+                  long y1, // for zooming
+                  long x2,
+                  long y2);
 
-void ZoomWnd();	// zooming with rubber-band
+    void CtrlRotate(long& xcoord,  // Ctrl+Right mouse down
+                    long& ycoord); // for rotating
 
-void DrawRectangle(long initX, // general purpose rubber-band display
-long initY, // during zoom or selection window
-long finalX,
-long finalY,
-bool Draw);
+    void ZoomWnd(); // zooming with rubber-band
 
-void DynRotate(); // rotating with the mouse
+    void DrawRectangle(long initX, // general purpose rubber-band display
+                       long initY, // during zoom or selection window
+                       long finalX,
+                       long finalY,
+                       bool Draw);
 
-void DynPan(); // panning with the mouse
+    void DynRotate(); // rotating with the mouse
 
-void ShiftSelectObject (const Standard_Integer flag) ;	// for selecting CAD objects
-// by using Shift a new object
-// will be added to those already
-// selected
+    void DynPan(); // panning with the mouse
 
-void SelectObject(const Standard_Integer flag); // for selecting CAD objects
-// by dragging a rubber-band
-// window or left mouse selection
+    void ShiftSelectObject(const Standard_Integer flag); // for selecting CAD objects
+    // by using Shift a new object
+    // will be added to those already
+    // selected
 
-//GUI Related Methods
-void OnSize(wxSizeEvent& event);
-void OnPaint(wxPaintEvent& event);
-void AddSphere();
+    void SelectObject(const Standard_Integer flag); // for selecting CAD objects
+                                                    // by dragging a rubber-band
+                                                    // window or left mouse selection
 
-void OnIdle(wxIdleEvent& event);
+    // GUI Related Methods
+    void OnSize(wxSizeEvent& event);
+    void OnPaint(wxPaintEvent& event);
+    void AddSphere();
 
-/////////////////////End Event-Table Functions////////////////////
+    void OnIdle(wxIdleEvent& event);
 
+    /////////////////////End Event-Table Functions////////////////////
 
 private:
-
-DECLARE_EVENT_TABLE()
-
+    DECLARE_EVENT_TABLE()
 };

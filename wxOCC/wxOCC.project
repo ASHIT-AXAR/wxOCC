@@ -1,15 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="wxOCC" InternalType="GUI">
+  <Plugins>
+    <Plugin Name="CMakePlugin">
+      <![CDATA[[{
+  "name": "Debug",
+  "enabled": false,
+  "buildDirectory": "build",
+  "sourceDirectory": "$(ProjectPath)",
+  "generator": "",
+  "buildType": "",
+  "arguments": [],
+  "parentProject": ""
+ }]]]>
+    </Plugin>
+    <Plugin Name="qmake">
+      <![CDATA[00010001N0005Debug000000000000]]>
+    </Plugin>
+  </Plugins>
   <Description/>
   <Dependencies/>
   <Dependencies Name="Debug"/>
   <Dependencies Name="Release"/>
   <VirtualDirectory Name="include">
     <File Name="include/wxOCC.h"/>
+    <File Name="include/wxCstmTabArt.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="src">
     <File Name="src/main.cpp"/>
     <File Name="src/wxOCC.cpp"/>
+    <File Name="src/wxCstmTabArt.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -26,7 +45,7 @@
         <IncludePath Value="/usr/local/include/oce"/>
         <IncludePath Value="/usr/include/gtk-2.0"/>
       </Compiler>
-      <Linker Options="$(shell wx-config --debug=yes --libs --unicode=yes)`wx-config --libs propgrid,core,base`;`wx-config --cxxflags`;`wx-config --libs`;`wx-config --libs aui`;`wx-config --libs --gl-libs` -lGL -lGLU -lglut -lstdc++;`wx-config --libs std stc`;`wx-config --libs ribbon;`$(shell pkg-config --libs --cflags gtk+-2.0);$(shell pkg-config --libs --cflags glib-2.0);-lTKernel;-lTKMath;-lTKBRep;-lTKTopAlgo;-lTKPrim;-lTKBO;-lTKOffset;-lTKService;-lTKV3d;-lTKOpenGl;-lTKFillet;`wx-config --libs --gl-libs` -lGL -lGLU -lglut -lstdc++" Required="yes">
+      <Linker Options="$(shell wx-config --debug=yes --libs --unicode=yes)`wx-config --libs propgrid,core,base`;`wx-config --cxxflags`;`wx-config --libs`;`wx-config --libs aui`;`wx-config --libs --gl-libs` -lGL -lGLU -lglut -lstdc++;`wx-config --libs std stc`;`wx-config --libs ribbon;`$(shell pkg-config --libs --cflags gtk+-2.0);$(shell pkg-config --libs --cflags glib-2.0);-lTKernel;-lTKMath;-lTKBRep;-lTKTopAlgo;-lTKPrim;-lTKBO;-lTKOffset;-lTKService;-lTKV3d;-lTKOpenGl;-lTKFillet;-lTKTObj;`wx-config --libs --gl-libs` -lGL -lGLU -lglut -lstdc++" Required="yes">
         <LibraryPath Value="/usr/local/lib"/>
         <Library Value="X11"/>
         <Library Value="libTKService.so"/>
@@ -41,6 +60,7 @@
         <Library Value="libTKGeomBase.so"/>
         <Library Value="libTKG3d.so"/>
         <Library Value="libTKG2d.so"/>
+        <Library Value="libTKTObj.so"/>
       </Linker>
       <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
